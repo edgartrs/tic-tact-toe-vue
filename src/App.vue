@@ -7,11 +7,28 @@ type Player = {
     symbol: string
 }
 
-const board = ref([
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
+type Square = {
+    row: number
+    col: number
+    symbol: string
+    highlight?: boolean
+}
+
+type Board = Array<Square>
+
+const board = ref<Board>([
+    { row: 0, col: 0, symbol: "" },
+    { row: 0, col: 1, symbol: "" },
+    { row: 0, col: 2, symbol: "" },
+    { row: 1, col: 0, symbol: "" },
+    { row: 1, col: 1, symbol: "" },
+    { row: 1, col: 2, symbol: "" },
+    { row: 2, col: 0, symbol: "" },
+    { row: 2, col: 1, symbol: "" },
+    { row: 2, col: 2, symbol: "" },
 ])
+
+// const winSquares = ref<Array<Square>>([])
 
 const playerOne: Player = {
     name: "Player One",
@@ -25,14 +42,20 @@ const playerTwo: Player = {
 
 const currentPlayer = ref(playerOne)
 
-const turn = (row: number, col: number, player: Player) => {
-    if (board.value[row][col] !== "") return
+const turn = (square: Square, player: Player) => {
+    if (square.symbol !== "") return
 
-    board.value[row][col] = player.symbol
+    square.symbol = player.symbol
     currentPlayer.value =
         player.symbol === playerOne.symbol ? playerTwo : playerOne
     console.table(board.value)
     console.log(currentPlayer.value)
+
+    // winSquares.value = getWinSquares()
+    // if (winSquares.value.length > 0) {
+    //     console.log(`Winner! ${currentPlayer.value.name}`)
+    //     console.table(winSquares.value)
+    // }
 }
 </script>
 
@@ -40,43 +63,15 @@ const turn = (row: number, col: number, player: Player) => {
     <main>
         <h1 class="text-4xl">Tic-Tac-Toe</h1>
         <hr class="my-4" />
-        <h2 class="text-2xl">Current Player: {{ currentPlayer.name }}</h2>
+        <h2 class="text-2xl">
+            Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
+        </h2>
         <div class="grid grid-cols-3 gap-1 w-48">
             <BoardSquare
-                @click="turn(0, 0, currentPlayer)"
-                :value="board[0][0]"
-            />
-            <BoardSquare
-                @click="turn(0, 1, currentPlayer)"
-                :value="board[0][1]"
-            />
-            <BoardSquare
-                @click="turn(0, 2, currentPlayer)"
-                :value="board[0][2]"
-            />
-            <BoardSquare
-                @click="turn(1, 0, currentPlayer)"
-                :value="board[1][0]"
-            />
-            <BoardSquare
-                @click="turn(1, 1, currentPlayer)"
-                :value="board[1][1]"
-            />
-            <BoardSquare
-                @click="turn(1, 2, currentPlayer)"
-                :value="board[1][2]"
-            />
-            <BoardSquare
-                @click="turn(2, 0, currentPlayer)"
-                :value="board[2][0]"
-            />
-            <BoardSquare
-                @click="turn(2, 1, currentPlayer)"
-                :value="board[2][1]"
-            />
-            <BoardSquare
-                @click="turn(2, 2, currentPlayer)"
-                :value="board[2][2]"
+                v-for="square in board"
+                @click="turn(square, currentPlayer)"
+                :value="square.symbol"
+                :highlight="square.highlight"
             />
         </div>
     </main>
