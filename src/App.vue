@@ -28,7 +28,7 @@ const board = ref<Board>([
     { row: 2, col: 2, symbol: "" },
 ])
 
-// const winSquares = ref<Array<Square>>([])
+const winSquares = ref<Array<Square>>([])
 
 const playerOne: Player = {
     name: "Player One",
@@ -51,11 +51,78 @@ const turn = (square: Square, player: Player) => {
     console.table(board.value)
     console.log(currentPlayer.value)
 
-    // winSquares.value = getWinSquares()
-    // if (winSquares.value.length > 0) {
-    //     console.log(`Winner! ${currentPlayer.value.name}`)
-    //     console.table(winSquares.value)
-    // }
+    winSquares.value = getWinSquares()
+    if (winSquares.value.length > 0) {
+        console.log(`Winner! ${currentPlayer.value.name}`)
+        console.table(winSquares.value)
+    }
+}
+
+const getWinSquares = () => {
+    const winSquares: Array<Square> = []
+
+    // Check rows
+    for (let row = 0; row < 3; row++) {
+        const currentSymbol = board.value[row].symbol
+        const rowSquares = board.value.filter((square) => square.row === row)
+        if (
+            rowSquares.every(
+                (square) =>
+                    square.symbol === currentSymbol && currentSymbol !== ""
+            )
+        ) {
+            winSquares.push(...rowSquares)
+        }
+    }
+
+    // Check columns
+    for (let col = 0; col < 3; col++) {
+        const currentSymbol = board.value[col].symbol
+        const colSquares = board.value.filter((square) => square.col === col)
+        if (
+            colSquares.every(
+                (square) =>
+                    square.symbol === currentSymbol && currentSymbol !== ""
+            )
+        ) {
+            winSquares.push(...colSquares)
+        }
+    }
+
+    // Check diagonals
+    const diagonalSquares = board.value.filter(
+        (square) => square.row === square.col
+    )
+    const diagSymbol = diagonalSquares[0].symbol
+    if (
+        diagonalSquares.every(
+            (square) => square.symbol === diagSymbol && diagSymbol !== ""
+        )
+    ) {
+        winSquares.push(...diagonalSquares)
+    }
+
+    const antiDiagSymbol = board.value[2].symbol
+    const antiDiagonalSquares = board.value.filter(
+        (square) => square.row + square.col === 2
+    )
+    if (
+        antiDiagonalSquares.every(
+            (square) =>
+                square.symbol === antiDiagSymbol && antiDiagSymbol !== ""
+        )
+    ) {
+        winSquares.push(...antiDiagonalSquares)
+    }
+
+    // Highlight winning squares
+    if (winSquares.length > 0) {
+        winSquares.forEach((square) => {
+            square.highlight = true
+        })
+    }
+
+    return winSquares
 }
 </script>
 
