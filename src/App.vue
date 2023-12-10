@@ -41,8 +41,10 @@ const playerTwo: Player = {
 }
 
 const currentPlayer = ref(playerOne)
+const winner = ref<Player | null>(null)
 
 const turn = (square: Square, player: Player) => {
+    if (winner.value) return
     if (square.symbol !== "") return
 
     square.symbol = player.symbol
@@ -53,6 +55,7 @@ const turn = (square: Square, player: Player) => {
 
     winSquares.value = getWinSquares()
     if (winSquares.value.length > 0) {
+        winner.value = currentPlayer.value
         console.log(`Winner! ${currentPlayer.value.name}`)
         console.table(winSquares.value)
     }
