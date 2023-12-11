@@ -61,6 +61,15 @@ const turn = (square: Square, player: Player) => {
     }
 }
 
+const reset = () => {
+    board.value.forEach((square) => {
+        square.symbol = ""
+        square.highlight = false
+    })
+    winner.value = null
+    currentPlayer.value = playerOne
+}
+
 const getWinSquares = () => {
     const winSquares: Array<Square> = []
 
@@ -133,16 +142,21 @@ const getWinSquares = () => {
     <main>
         <h1 class="text-4xl">Tic-Tac-Toe</h1>
         <hr class="my-4" />
-        <h2 class="text-2xl">
-            Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
-        </h2>
-        <div class="grid grid-cols-3 gap-1 w-48">
-            <BoardSquare
-                v-for="square in board"
-                @click="turn(square, currentPlayer)"
-                :value="square.symbol"
-                :highlight="square.highlight"
-            />
+        <div class="mx-auto">
+            <h2 class="text-2xl">
+                Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
+            </h2>
+            <button class="bg-slate-300 rounded-lg p-1" @click="reset">
+                New Game
+            </button>
+            <div class="grid grid-cols-3 gap-1 w-48">
+                <BoardSquare
+                    v-for="square in board"
+                    @click="turn(square, currentPlayer)"
+                    :value="square.symbol"
+                    :highlight="square.highlight"
+                />
+            </div>
         </div>
     </main>
 </template>
