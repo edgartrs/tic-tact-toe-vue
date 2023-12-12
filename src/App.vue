@@ -139,23 +139,28 @@ const getWinSquares = () => {
 </script>
 
 <template>
-    <main>
-        <h1 class="text-4xl">Tic-Tac-Toe</h1>
-        <hr class="my-4" />
+    <main class="flex justify-center items-center">
         <div class="mx-auto">
-            <h2 class="text-2xl">
-                Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
-            </h2>
-            <button class="bg-slate-300 rounded-lg p-1" @click="reset">
-                New Game
-            </button>
-            <div class="grid grid-cols-3 gap-1 w-48">
-                <BoardSquare
-                    v-for="square in board"
-                    @click="turn(square, currentPlayer)"
-                    :value="square.symbol"
-                    :highlight="square.highlight"
-                />
+            <h1 class="text-4xl">Tic-Tac-Toe</h1>
+            <hr class="my-4" />
+            <div class="mx-auto">
+                <button
+                    class="bg-slate-300 text-gray-900 rounded-lg p-2 hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                    @click="reset"
+                >
+                    New Game
+                </button>
+                <h2 class="text-l mt-8">
+                    Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
+                </h2>
+                <div class="grid grid-cols-3 gap-1 w-48">
+                    <BoardSquare
+                        v-for="square in board"
+                        @click="turn(square, currentPlayer)"
+                        :value="square.symbol"
+                        :highlight="square.highlight"
+                    />
+                </div>
             </div>
         </div>
     </main>
