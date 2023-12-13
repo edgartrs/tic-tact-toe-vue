@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import BoardSquare from "./components/BoardSquare.vue"
 
 type Player = {
@@ -42,14 +42,19 @@ const playerTwo: Player = {
 
 const currentPlayer = ref(playerOne)
 const winner = ref<Player | null>(null)
+const status = computed(() => {
+    if (winner.value) {
+        return `Winner: ${winner.value.name} (${winner.value.symbol})!!!`
+    } else {
+        return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol})}`
+    }
+})
 
 const turn = (square: Square, player: Player) => {
     if (winner.value) return
     if (square.symbol !== "") return
 
     square.symbol = player.symbol
-    currentPlayer.value =
-        player.symbol === playerOne.symbol ? playerTwo : playerOne
     console.table(board.value)
     console.log(currentPlayer.value)
 
@@ -59,6 +64,8 @@ const turn = (square: Square, player: Player) => {
         console.log(`Winner! ${currentPlayer.value.name}`)
         console.table(winSquares.value)
     }
+    currentPlayer.value =
+        player.symbol === playerOne.symbol ? playerTwo : playerOne
 }
 
 const reset = () => {
@@ -151,7 +158,7 @@ const getWinSquares = () => {
                     New Game
                 </button>
                 <h2 class="text-l mt-8">
-                    Turn: {{ currentPlayer.name }} ({{ currentPlayer.symbol }})
+                    {{ status }}
                 </h2>
                 <div class="grid grid-cols-3 gap-1 w-48">
                     <BoardSquare
