@@ -46,7 +46,7 @@ const status = computed(() => {
     if (winner.value) {
         return `Winner: ${winner.value.name} (${winner.value.symbol})!!!`
     } else {
-        return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol})}`
+        return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol})`
     }
 })
 
