@@ -69,7 +69,7 @@ const botTurn = () => {
     // wait 2 seconds before bot turn
     setTimeout(() => {
         turn(randomSquare, currentPlayer.value)
-    }, 1000)
+    }, 500)
 }
 
 const nextPlayer = () => {
