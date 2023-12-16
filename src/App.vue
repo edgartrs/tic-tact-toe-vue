@@ -52,7 +52,7 @@ const status = computed(() => {
     } else if (endGame.value) {
         return `It's a tie!`
     } else if (currentPlayer.value.isBot) {
-        return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol}) is thinking...`
+        return `${currentPlayer.value.name} (${currentPlayer.value.symbol}) is thinking...`
     } else {
         return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol})`
     }
@@ -218,7 +218,7 @@ const startTwoPlayerGame = () => {
                 >
                     New Game
                 </button>
-                <h2 class="text-l mt-8">
+                <h2 class="text-sm mt-8 mb-2 whitespace-wrap">
                     {{ status }}
                 </h2>
                 <dialog
