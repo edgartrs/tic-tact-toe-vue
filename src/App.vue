@@ -59,6 +59,7 @@ const botTurn = () => {
     if (winner.value) return
 
     const emptySquares = board.value.filter((square) => square.symbol === "")
+    if (emptySquares.length === 0) return
     const randomSquare =
         emptySquares[Math.floor(Math.random() * emptySquares.length)]
 
