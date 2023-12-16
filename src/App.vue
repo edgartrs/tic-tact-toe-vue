@@ -45,9 +45,12 @@ const playerTwo: Player = {
 
 const currentPlayer = ref(playerOne)
 const winner = ref<Player | null>(null)
+const endGame = ref(false)
 const status = computed(() => {
     if (winner.value) {
         return `Winner: ${winner.value.name} (${winner.value.symbol})!!!`
+    } else if (endGame.value) {
+        return `It's a tie!`
     } else if (currentPlayer.value.isBot) {
         return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol}) is thinking...`
     } else {
@@ -84,12 +87,21 @@ const turn = (square: Square, player: Player) => {
 
     winSquares.value = getWinSquares()
     if (winSquares.value.length > 0) {
+        // Highlight winning squares
+        winSquares.value.forEach((square) => {
+            square.highlight = true
+        })
+
         winner.value = currentPlayer.value
         console.log(`Winner! ${currentPlayer.value.name}`)
         console.table(winSquares.value)
+        return
     }
-    // currentPlayer.value =
-    //     player.symbol === playerOne.symbol ? playerTwo : playerOne
+
+    if (board.value.every((square) => square.symbol !== "")) {
+        endGame.value = true
+        return
+    }
 
     if (singlePlayer && !currentPlayer.value.isBot) {
         nextPlayer()
@@ -165,13 +177,6 @@ const getWinSquares = () => {
         )
     ) {
         winSquares.push(...antiDiagonalSquares)
-    }
-
-    // Highlight winning squares
-    if (winSquares.length > 0) {
-        winSquares.forEach((square) => {
-            square.highlight = true
-        })
     }
 
     return winSquares
