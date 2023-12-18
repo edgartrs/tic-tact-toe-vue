@@ -57,6 +57,18 @@ const status = computed(() => {
         return `Turn: ${currentPlayer.value.name} (${currentPlayer.value.symbol})`
     }
 })
+const reset = () => {
+    board.value.forEach((square) => {
+        square.symbol = ""
+        square.highlight = false
+    })
+    winner.value = null
+    endGame.value = false
+    playerTwo.isBot = false
+    currentPlayer.value = playerOne
+
+    openDialog()
+}
 
 const botTurn = () => {
     if (winner.value) return
@@ -109,17 +121,6 @@ const turn = (square: Square, player: Player) => {
     } else {
         nextPlayer()
     }
-}
-
-const reset = () => {
-    board.value.forEach((square) => {
-        square.symbol = ""
-        square.highlight = false
-    })
-    winner.value = null
-    currentPlayer.value = playerOne
-
-    openDialog()
 }
 
 const getWinSquares = () => {
