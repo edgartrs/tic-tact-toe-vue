@@ -45,8 +45,9 @@ const playerTwo: Player = {
 
 const currentPlayer = ref(playerOne)
 const winner = ref<Player | null>(null)
-const endGame = ref(false)
-const status = computed(() => {
+const endGame = ref(true)
+
+const displayStatus = computed(() => {
     if (winner.value) {
         return `Winner: ${winner.value.name} (${winner.value.symbol})!!!`
     } else if (endGame.value) {
@@ -220,7 +221,7 @@ const startTwoPlayerGame = () => {
                     New Game
                 </button>
                 <h2 class="text-sm mt-8 mb-2 whitespace-wrap">
-                    {{ status }}
+                    {{ displayStatus }}
                 </h2>
                 <dialog
                     ref="dialog"
